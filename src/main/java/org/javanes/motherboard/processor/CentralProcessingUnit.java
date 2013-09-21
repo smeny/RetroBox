@@ -74,7 +74,7 @@ public final class CentralProcessingUnit {
     private int currentOperandSize;
     private int lastInstructionOffset;
 
-    public CentralProcessingUnit(Cartridge cart, long clockCount) {
+    public CentralProcessingUnit(Cartridge cart) {
         accumulator = new Register();
         registerX = new Register();
         registerY = new Register();
@@ -202,11 +202,14 @@ public final class CentralProcessingUnit {
         sbuilder.append(SPACE);
         sbuilder.append(Integer.toHexString(currentOperand));
         sbuilder.append(SPACE);
-        sbuilder.append("A:" + Integer.toHexString(accumulator.getRegisterData()).toUpperCase());
+        sbuilder.append("A:");
+        sbuilder.append(Integer.toHexString(accumulator.getRegisterData()).toUpperCase());
         sbuilder.append(SPACE);
-        sbuilder.append("X:" + Integer.toHexString(registerX.getRegisterData()).toUpperCase());
+        sbuilder.append("X:");
+        sbuilder.append(Integer.toHexString(registerX.getRegisterData()).toUpperCase());
         sbuilder.append(SPACE);
-        sbuilder.append("Y:" +Integer.toHexString( registerY.getRegisterData()).toUpperCase());
+        sbuilder.append("Y:");
+        sbuilder.append(Integer.toHexString(registerY.getRegisterData()).toUpperCase());
         return sbuilder.toString();
     }
 

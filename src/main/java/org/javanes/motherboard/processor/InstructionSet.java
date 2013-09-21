@@ -190,5 +190,5 @@ public enum InstructionSet {
     TXS,
 
     /** Transfer Index Y to Accumulator. */
-    TYA;
+    TYA
 }

@@ -22,4 +22,5 @@ public enum HeaderIndex {
 	CHR_ROM_PAGE_COUNT,
 	CONTROL_BYTE_ONE,
 	CONTROL_BYTE_TWO
-};
+}
+

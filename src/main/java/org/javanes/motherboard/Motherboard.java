@@ -57,7 +57,7 @@ public final class Motherboard {
         System.setProperty("java.util.logging.config.file", "logging.properties");
         try {
             final Cartridge cart = CartridgeReader.loadCartridge(inputStream);
-            final CentralProcessingUnit cpu = new CentralProcessingUnit(cart, CLOCK_CYCLE);
+            final CentralProcessingUnit cpu = new CentralProcessingUnit(cart);
             cpu.emulate(CLOCK_CYCLE);
         } catch (UnknownRomFormatException | IOException e) {
             LOGGER.log(Level.SEVERE, "Exception reading cartridge", e);

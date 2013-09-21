@@ -76,19 +76,20 @@ public final class CartridgeReader {
         final BufferedInputStream bis = new BufferedInputStream(is);
 
         // Ensures that the file read has a known format
-        if (!validateNesRom(bis, cart)) {
+        if (validateNesRom(bis)) {
+            // Loads all needed information in the Cartridge object
+            loadRom(bis, cart);
+            // Finally closes the reader
+            bis.close();
+        } else {
             bis.close();
             throw new UnknownRomFormatException();
         }
-        // Loads all needed information in the Cartridge object
-        loadRom(bis, cart);
-        // Finally closes the reader
-        bis.close();
 
         return cart;
     }
 
-    private static boolean validateNesRom(final BufferedInputStream bis, final Cartridge cartridge) throws IOException {
+    private static boolean validateNesRom(final BufferedInputStream bis) throws IOException {
         boolean result = false;
         byte[] readHeader = new byte[INES_VALIDATION_HEADER.length];
 
