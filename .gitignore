@@ -1,5 +1,5 @@
-target/
-/.pmd
-/.classpath
-/.checkstyle
-.settings/
+target
+.classpath
+.settings
+bin
+.git
