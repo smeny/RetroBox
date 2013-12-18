@@ -19,10 +19,9 @@ package org.smeny.retrobox.motherboard.processor.core;
 
 import java.util.logging.Logger;
 
-import org.smeny.retrobox.motherboard.cartridge.Cartridge;
 import org.smeny.retrobox.motherboard.memory.AbstractMemoryController;
 import org.smeny.retrobox.motherboard.register.Register;
-import org.smeny.retrobox.motherboard.register.StatusRegister;
+import org.smeny.retrobox.motherboard.register.flags.FlagsRegister_Z80;
 
 /**
  * This class represents a Zilog 80 Central Processing Unit. The CPU is Little Endian, this means that the least significant byte (LSB) will
@@ -30,6 +29,7 @@ import org.smeny.retrobox.motherboard.register.StatusRegister;
  * 
  * @author Stéphane Meny
  */
+@SuppressWarnings("unused")
 public final class Core_Z80 extends AbstractCore {
 
 	/** Our default logger for this class. */
@@ -38,7 +38,7 @@ public final class Core_Z80 extends AbstractCore {
 	/** The accumulator where data are read/stored. */
 	private final Register regAcc;
 	/** The status register where each resulting flag is stored. */
-	private final StatusRegister regFlag;
+	private final FlagsRegister_Z80 regFlag;
 	private final Register regBC;
 	private final Register regDE;
 	private final Register regHL;
@@ -48,7 +48,7 @@ public final class Core_Z80 extends AbstractCore {
 	private final Register regRefresh;
 
 	private final Register shadowAcc;
-	private final StatusRegister shadowFlag;
+	private final FlagsRegister_Z80 shadowFlag;
 	private final Register shadowBC;
 	private final Register shadowDE;
 	private final Register shadowHL;
@@ -61,7 +61,7 @@ public final class Core_Z80 extends AbstractCore {
 
 	public Core_Z80(AbstractMemoryController memory) {
 		regAcc = Register.getRegister8();
-		regFlag = new StatusRegister();
+		regFlag = new FlagsRegister_Z80();
 		regBC = Register.getRegister16();
 		regDE = Register.getRegister16();
 		regHL = Register.getRegister16();
@@ -71,7 +71,7 @@ public final class Core_Z80 extends AbstractCore {
 		regRefresh = Register.getRegister8();
 
 		shadowAcc = Register.getRegister8();
-		shadowFlag = new StatusRegister();
+		shadowFlag = new FlagsRegister_Z80();
 		shadowBC = Register.getRegister16();
 		shadowDE = Register.getRegister16();
 		shadowHL = Register.getRegister16();

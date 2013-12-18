@@ -32,7 +32,7 @@ import org.smeny.retrobox.motherboard.processor.nes.Decoder;
 import org.smeny.retrobox.motherboard.processor.nes.InstructionSet;
 import org.smeny.retrobox.motherboard.processor.nes.OperationCode;
 import org.smeny.retrobox.motherboard.register.Register;
-import org.smeny.retrobox.motherboard.register.StatusRegister;
+import org.smeny.retrobox.motherboard.register.flags.FlagsRegister_2A03;
 
 /**
  * This class represents the Central Processing Unit of the NES. The CPU is a
@@ -60,7 +60,7 @@ public final class Core_2A03 extends AbstractCore {
     private static final Logger LOGGER = Logger.getLogger(Core_2A03.class.getName());
 
     /** The status register where each resulting flag is stored. */
-    private StatusRegister statusRegister;
+    private FlagsRegister_2A03 statusRegister;
 
     /** The accumulator where data are read/stored. */
     private Register accumulator;
@@ -84,7 +84,7 @@ public final class Core_2A03 extends AbstractCore {
         registerX = Register.getRegister8();
         registerY = Register.getRegister8();
         stackPointer = Register.getRegister8();
-        statusRegister = new StatusRegister();
+        statusRegister = new FlagsRegister_2A03();
         memory = new BasicMemoryController(cart);
         isPoweredOn = true;
         isReset = false;
@@ -178,7 +178,7 @@ public final class Core_2A03 extends AbstractCore {
         return currentOpCode;
     }
 
-    public StatusRegister getStatusRegister() {
+    public FlagsRegister_2A03 getStatusRegister() {
         return statusRegister;
     }
 

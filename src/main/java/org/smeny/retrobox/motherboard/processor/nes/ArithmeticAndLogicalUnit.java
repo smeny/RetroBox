@@ -23,7 +23,7 @@ import org.smeny.retrobox.exception.WriteOutOfMemoryException;
 import org.smeny.retrobox.motherboard.memory.AbstractMemoryController;
 import org.smeny.retrobox.motherboard.processor.core.Core_2A03;
 import org.smeny.retrobox.motherboard.register.Register;
-import org.smeny.retrobox.motherboard.register.StatusRegister;
+import org.smeny.retrobox.motherboard.register.flags.FlagsRegister_2A03;
 
 public final class ArithmeticAndLogicalUnit {
 
@@ -173,7 +173,7 @@ public final class ArithmeticAndLogicalUnit {
         }
 
         // Set the status register with the needed flags
-        StatusRegister sr = cpu.getStatusRegister();
+        FlagsRegister_2A03 sr = cpu.getStatusRegister();
         sr.setNegativeFlag(operandValue);
         sr.setZeroFlag(operandValue);
         // Sets the X index register
@@ -247,7 +247,7 @@ public final class ArithmeticAndLogicalUnit {
     private void additionWithCarry() throws ReadOutOfMemoryException, UnknownOperationException {
         int carry = 0;
         int srcValue = getSourceValue();
-        StatusRegister sr = cpu.getStatusRegister();
+        FlagsRegister_2A03 sr = cpu.getStatusRegister();
         Register accumulator = cpu.getAccumulator();
         int accValue = accumulator.getRegisterData();
 
@@ -258,11 +258,15 @@ public final class ArithmeticAndLogicalUnit {
         // Computes addition and computes overflow
         int result = accValue + srcValue + carry;
         int overflow = (~(accValue ^ srcValue)) & (accValue ^ result);
+        if(overflow > 0) {
+        	sr.setOverflowFlag();
+        } else {
+        	sr.clearOverflowFlag();
+        }
 
         // Sets every resulting flags
         sr.setCarryFlag(result);
         sr.setZeroFlag(result);
-        sr.setOverflowFlag(overflow);
         sr.setNegativeFlag(result);
 
         // Sets the result in the accumulator
@@ -271,7 +275,7 @@ public final class ArithmeticAndLogicalUnit {
 
     private void loadAccumulatorWithMemory() throws ReadOutOfMemoryException, UnknownOperationException {
         int srcValue = getSourceValue();
-        StatusRegister statusRegister = cpu.getStatusRegister();
+        FlagsRegister_2A03 statusRegister = cpu.getStatusRegister();
         Register accumulator = cpu.getAccumulator();
 
         // Sets every resulting flags
@@ -291,7 +295,7 @@ public final class ArithmeticAndLogicalUnit {
     private void logicalAnd(final byte memoryValue) {
         Register accumulator = cpu.getAccumulator();
         int accumulatorValue = accumulator.getRegisterData();
-        StatusRegister statusRegister = cpu.getStatusRegister();
+        FlagsRegister_2A03 statusRegister = cpu.getStatusRegister();
 
         // Computes logical AND
         accumulatorValue &= memoryValue;
@@ -304,8 +308,8 @@ public final class ArithmeticAndLogicalUnit {
         accumulator.setRegisterData(accumulatorValue & BYTE_MASK);
     }
 
-    /*private void arithmeticShiftLeft(final byte memoryValue) {
-        StatusRegister statusRegister = cpu.getStatusRegister();
+    private void arithmeticShiftLeft(final byte memoryValue) {
+    	FlagsRegister_2A03 statusRegister = cpu.getStatusRegister();
         
         statusRegister.setCarryFlag(memoryValue);
         int result = memoryValue << 1;
@@ -313,18 +317,18 @@ public final class ArithmeticAndLogicalUnit {
         // Code the value from memory on an unsigned byte
         int unsignedMemoryValue = memoryValue & BYTE_MASK;
 
-    }*/
+    }
 
     private void testBitsInMemoryWithAccumulator() throws ReadOutOfMemoryException, UnknownOperationException {
         switch (currentAddressingMode) {
             case ABSOLUTE:
             case ZERO_PAGE:
-                StatusRegister statusRegister = cpu.getStatusRegister();
+            	FlagsRegister_2A03 statusRegister = cpu.getStatusRegister();
                 Register accumulator = cpu.getAccumulator();
                 int srcValue = getSourceValue();
 
                 statusRegister.setNegativeFlag(srcValue);
-                statusRegister.setOverflowFlag(0x40 & srcValue);   /* Copy bit 6 to OVERFLOW flag. */
+                // statusRegister.setOverflowFlag(0x40 & srcValue);   /* Copy bit 6 to OVERFLOW flag. */
                 statusRegister.setZeroFlag(srcValue & accumulator.getRegisterData());
                 break;
             default:
